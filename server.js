@@ -16,6 +16,9 @@ app.get('/', (req, res) => {
     res.send(`Hello`);
 })
 
+const categoryRouter = require("./routes/categoryRouter.js");
+
+app.use("/api/categories", categoryRouter);
 
 const PORT = process.env.PORT || 8080;
 
