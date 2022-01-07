@@ -29,7 +29,7 @@ module.exports = {
             if (category) {
                 const oldCategory = {title: category.title, description: category.description};
                 category.title = newCategory.title ?? category.title;
-                category.description = newCategory.title ?? category.description;
+                category.description = newCategory.description ?? category.description;
                 console.log('result', category);
                 await category.save();
                 sendResult(res, 'Success', {
@@ -109,6 +109,7 @@ module.exports = {
             const category = await Category.findOne({_id: new ObjectId(req.params.id)});
             if (category) {
                 await Category.deleteOne(category);
+                /////Delete topics and questions/////
                 sendResult(res, 'Success', {
                     "id": category._id,
                     "title": category.title,

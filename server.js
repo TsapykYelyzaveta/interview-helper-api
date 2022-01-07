@@ -17,8 +17,10 @@ app.get('/', (req, res) => {
 })
 
 const categoryRouter = require("./routes/categoryRouter.js");
+const topicRouter = require("./routes/topicRouter.js");
 
 app.use("/api/categories", categoryRouter);
+app.use("/api/topics", topicRouter);
 
 const PORT = process.env.PORT || 8080;
 
