@@ -1,21 +1,7 @@
 const Question = require('../models/questionModel');
 const Topic = require('../models/topicModel');
 const {ObjectId} = require("mongodb");
-const {sendError, sendResult} = require('./baseController');
-
-async function getQuestionById(id) {
-    console.log('id', id)
-    const question = await Question.findOne({_id: new ObjectId(id)},'-__v');
-    console.log('question', question);
-    return question ?? false;
-}
-
-async function getTopicById(id) {
-
-    const topic = await Topic.findOne({_id: new ObjectId(id)},'-__v');
-    console.log('topic', topic);
-    return topic ?? false;
-}
+const {sendError, sendResult, getQuestionById, getTopicById, getAllQuestions} = require('./baseController');
 
 module.exports = {
     addQuestion: async (req, res) => {
@@ -115,7 +101,7 @@ module.exports = {
     getQuestions: async (req, res) => {
         console.log("getQuestions");
         try {
-            const questions = await Question.find({});
+            const questions = await getAllQuestions();
             console.log(questions);
             if (questions.length) {
                 sendResult(res, 'Success', questions.map((question) => {
@@ -137,8 +123,8 @@ module.exports = {
     getQuestion: async (req, res) => {
         console.log("getQuestion");
         try {
-            const question = await Question.findOne({_id: new ObjectId(req.params.id)});
-            let topic = await Topic.findOne({_id: new ObjectId(question.topicId)});
+            const question = await getQuestionById(req.params.id);
+            let topic = await getTopicById(question.topicId);
             if (question) {
                 sendResult(res, 'Success', {
                     "id": question._id,
@@ -157,7 +143,7 @@ module.exports = {
     deleteQuestion: async (req, res) => {
         console.log("deleteQuestion");
         try {
-            const question = await Question.findOne({_id: new ObjectId(req.params.id)});
+            const question = await getQuestionById(req.params.id);
             if (question) {
                 await Question.deleteOne(question);
                 sendResult(res, 'Success', {

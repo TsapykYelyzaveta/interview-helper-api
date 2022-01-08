@@ -1,6 +1,6 @@
 const Category = require('../models/categoryModel');
 const {ObjectId} = require("mongodb");
-const {sendError, sendResult} = require('./baseController');
+const {sendError, sendResult, getCategoryById, getAllCategories} = require('./baseController');
 
 module.exports = {
     addCategory: async (req, res) => {
@@ -25,7 +25,7 @@ module.exports = {
             let newCategory = new Category(req.body);
             newCategory._id = new ObjectId(req.body.id);
             console.log('category', newCategory);
-            let category = await Category.findOne({_id: new ObjectId(req.body.id)});
+            let category = await getCategoryById(req.body.id);
             if (category) {
                 const oldCategory = {title: category.title, description: category.description};
                 category.title = newCategory.title ?? category.title;
@@ -69,7 +69,7 @@ module.exports = {
     getCategories: async (req, res) => {
         console.log("getCategories");
         try {
-            const categories = await Category.find({});
+            const categories = await getAllCategories();
             console.log(categories);
             if (categories.length) {
                 sendResult(res, 'Success', categories.map((category) => {
@@ -89,7 +89,7 @@ module.exports = {
     getCategory: async (req, res) => {
         console.log("getCategory");
         try {
-            const category = await Category.findOne({_id: new ObjectId(req.params.id)});
+            const category = await getCategoryById(req.params.id);
             if (category) {
                 sendResult(res, 'Success', {
                     "id": category._id,
@@ -106,7 +106,7 @@ module.exports = {
     deleteCategory: async (req, res) => {
         console.log("deleteCategory");
         try {
-            const category = await Category.findOne({_id: new ObjectId(req.params.id)});
+            const category = await getCategoryById(req.params.id);
             if (category) {
                 await Category.deleteOne(category);
                 /////Delete topics and questions/////

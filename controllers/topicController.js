@@ -1,14 +1,13 @@
 const Topic = require('../models/topicModel');
-const Category = require('../models/categoryModel');
 const {ObjectId} = require("mongodb");
-const {sendError, sendResult} = require('./baseController');
+const {sendError, sendResult, getAllTopics, getCategoryById, getTopicById} = require('./baseController');
 
 module.exports = {
     addTopic: async (req, res) => {
         console.log("addTopic");
         try {
             const topic = new Topic(req.body);
-            let category = await Category.findOne({_id: new ObjectId(req.body.categoryId)});
+            let category = await getCategoryById(req.body.categoryId);
             if(category){
                 console.log(topic);
                 await topic.save();
@@ -31,19 +30,19 @@ module.exports = {
         try {
             let newTopic = new Topic(req.body);
             newTopic._id = new ObjectId(req.body.id);
-            console.log('topic', newTopic);
-            let topic = await Topic.findOne({_id: new ObjectId(req.body.id)});
+            let topic = await getTopicById(req.body.id);
             if (topic) {
                 const oldTopic = {title: topic.title, description: topic.description};
                 topic.title = newTopic.title ?? topic.title;
                 topic.description = newTopic.description ?? topic.description;
-                console.log('result', topic);
                 await topic.save();
                 sendResult(res, 'Success', {
                     "id": topic._id,
                     "oldTitle": oldTopic.title,
+                    "oldCategoryId": oldTopic.categoryId,
                     "oldDescription": oldTopic.description,
                     "title": topic.title,
+                    "categoryId": topic.categoryId,
                     "description": topic.description,
                 });
             } else {
@@ -58,15 +57,15 @@ module.exports = {
         try {
             let newTopic = new Topic(req.body);
             newTopic._id = new ObjectId(req.body.id);
-            if(!newTopic.title){
-                console.log('Error');
-                sendError(res, 400, 'Title is required');
+            if(!newTopic.title || !newTopic.categoryId){
+                sendError(res, 400, 'Title and categoryId are required');
                 return;
             }
             await Topic.replaceOne({_id: new ObjectId(req.body.id)}, newTopic);
             sendResult(res, 'Success', {
                 "id": newTopic._id,
                 "title": newTopic.title,
+                "categoryId": newTopic.categoryId,
                 "description": newTopic.description
             });
         } catch (error) {
@@ -76,7 +75,7 @@ module.exports = {
     getTopics: async (req, res) => {
         console.log("getTopics");
         try {
-            const topics = await Topic.find({});
+            const topics = await getAllTopics();
             console.log(topics);
             if (topics.length) {
                 sendResult(res, 'Success', topics.map((topic) => {
@@ -97,8 +96,8 @@ module.exports = {
     getTopic: async (req, res) => {
         console.log("getTopic");
         try {
-            const topic = await Topic.findOne({_id: new ObjectId(req.params.id)});
-            let category = await Category.findOne({_id: new ObjectId(topic.categoryId)});
+            const topic = await getTopicById(req.params.id);
+            let category = await getCategoryById(topic.categoryId);
             if (topic) {
                 sendResult(res, 'Success', {
                     "id": topic._id,
@@ -116,7 +115,7 @@ module.exports = {
     deleteTopic: async (req, res) => {
         console.log("deleteTopic");
         try {
-            const topic = await Topic.findOne({_id: new ObjectId(req.params.id)});
+            const topic = await getTopicById(req.params.id);
             if (topic) {
                 await Topic.deleteOne(topic);
                 /////Delete topics and questions/////
