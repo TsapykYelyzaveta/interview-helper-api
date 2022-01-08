@@ -16,11 +16,13 @@ app.get('/', (req, res) => {
     res.send(`Hello`);
 })
 
-const categoryRouter = require("./routes/categoryRouter.js");
-const topicRouter = require("./routes/topicRouter.js");
+const categoryRouter = require("./routes/categoryRouter");
+const topicRouter = require("./routes/topicRouter");
+const questionRouter = require("./routes/questionRouter");
 
 app.use("/api/categories", categoryRouter);
 app.use("/api/topics", topicRouter);
+app.use("/api/questions", questionRouter);
 
 const PORT = process.env.PORT || 8080;
 

@@ -10,10 +10,6 @@ const QuestionSchema = new Schema({
         type: String,
         required: true
     },
-    categoryId: {
-        type: String,
-        required: true
-    },
     topicId: {
         type: String,
         required: true
