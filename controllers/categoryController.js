@@ -108,7 +108,7 @@ module.exports = {
         try {
             const category = await getCategoryById(req.params.id);
             if (category) {
-                await Category.deleteOne(category);
+                await category.remove();
                 /////Delete topics and questions/////
                 sendResult(res, 'Success', {
                     "id": category._id,

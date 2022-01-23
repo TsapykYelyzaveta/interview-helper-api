@@ -117,7 +117,7 @@ module.exports = {
         try {
             const topic = await getTopicById(req.params.id);
             if (topic) {
-                await Topic.deleteOne(topic);
+                await topic.remove();
                 /////Delete topics and questions/////
                 sendResult(res, 'Success', {
                     "id": topic._id,

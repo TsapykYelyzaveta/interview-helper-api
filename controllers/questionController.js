@@ -145,7 +145,7 @@ module.exports = {
         try {
             const question = await getQuestionById(req.params.id);
             if (question) {
-                await Question.deleteOne(question);
+                await question.remove();
                 sendResult(res, 'Success', {
                     "id": question._id,
                     "topicId": question.topicId,
