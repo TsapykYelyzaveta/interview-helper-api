@@ -32,9 +32,10 @@ module.exports = {
             newTopic._id = new ObjectId(req.body.id);
             let topic = await getTopicById(req.body.id);
             if (topic) {
-                const oldTopic = {title: topic.title, description: topic.description};
+                const oldTopic = {title: topic.title, description: topic.description, categoryId: topic.categoryId};
                 topic.title = newTopic.title ?? topic.title;
                 topic.description = newTopic.description ?? topic.description;
+                topic.categoryId = newTopic.categoryId ?? topic.categoryId;
                 await topic.save();
                 sendResult(res, 'Success', {
                     "id": topic._id,
