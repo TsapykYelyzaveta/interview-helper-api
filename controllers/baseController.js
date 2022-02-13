@@ -51,4 +51,9 @@ module.exports = {
         const topics = await Topic.find({'categoryId':categoryId},'-__v');
         return topics;
     },
+
+    async getQuestionsByTopicId(topicId) {
+        const questions = await Question.find({'topicId':topicId},'-__v');
+        return questions;
+    },
 }
