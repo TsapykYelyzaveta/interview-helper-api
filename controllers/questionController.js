@@ -15,7 +15,7 @@ module.exports = {
                 sendResult(res, 'Success',
                     {
                         "id": question._id,
-                        "topic": topic.title,
+                        "topicId": question.topicId,
                         "title": question.title,
                         "answer": question.answer,
                         "description": question.description,
