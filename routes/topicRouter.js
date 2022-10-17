@@ -3,9 +3,9 @@ const router = express.Router();
 const TopicController = require("../controllers/topicController.js");
 
 
-router.post("/add", TopicController.addTopic);
-router.patch("/edit", TopicController.editTopic);
-router.put("/edit", TopicController.replaceTopic);
+router.post("/", TopicController.addTopic);
+router.patch("/", TopicController.editTopic);
+router.put("/", TopicController.replaceTopic);
 router.get("/", TopicController.getTopics);
 router.get("/:id", TopicController.getTopic);
 router.delete("/:id", TopicController.deleteTopic);
