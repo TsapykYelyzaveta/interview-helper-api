@@ -76,7 +76,7 @@ module.exports = {
     getTopics: async (req, res) => {
         console.log("getTopics");
         try {
-            const topics = await getAllTopics();
+            const topics = await Topic.find({...req.query},'-__v');
             console.log(topics);
             if (topics.length) {
                 sendResult(res, 'Success', topics.map((topic) => {
