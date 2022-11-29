@@ -71,17 +71,13 @@ module.exports = {
         try {
             const categories = await getAllCategories();
             console.log(categories);
-            if (categories.length) {
-                sendResult(res, 'Success', categories.map((category) => {
-                    return {
-                        "id": category._id,
-                        "title": category.title,
-                        "description": category.description,
-                    }
+            sendResult(res, 'Success', categories.map((category) => {
+                return {
+                    "id": category._id,
+                    "title": category.title,
+                    "description": category.description,
+                }
                 }));
-            } else {
-                sendError(res, 400, 'Categories are missing')
-            }
         } catch (error) {
             sendError(res, 400, 'Bad request')
         }

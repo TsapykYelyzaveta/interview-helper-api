@@ -103,19 +103,15 @@ module.exports = {
         try {
             const questions = await getAllQuestions();
             console.log(questions);
-            if (questions.length) {
-                sendResult(res, 'Success', questions.map((question) => {
-                    return {
-                        "id": question._id,
-                        "topicId": question.topicId,
-                        "title": question.title,
-                        "answer": question.answer,
-                        "description": question.description,
-                    }
-                }));
-            } else {
-                sendError(res, 400, 'Questions are missing')
-            }
+            sendResult(res, 'Success', questions.map((question) => {
+                return {
+                    "id": question._id,
+                    "topicId": question.topicId,
+                    "title": question.title,
+                    "answer": question.answer,
+                    "description": question.description,
+                }
+            }));
         } catch (error) {
             sendError(res, 400, 'Bad request')
         }

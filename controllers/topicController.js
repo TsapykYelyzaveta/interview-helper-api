@@ -78,18 +78,15 @@ module.exports = {
         try {
             const topics = await Topic.find({...req.query},'-__v');
             console.log(topics);
-            if (topics.length) {
-                sendResult(res, 'Success', topics.map((topic) => {
-                    return {
-                        "id": topic._id,
-                        "categoryId": topic.categoryId,
-                        "title": topic.title,
-                        "description": topic.description,
-                    }
-                }));
-            } else {
-                sendError(res, 400, 'Topics are missing')
-            }
+            sendResult(res, 'Success', topics.map((topic) => {
+                return {
+                    "id": topic._id,
+                    "categoryId": topic.categoryId,
+                    "title": topic.title,
+                    "description": topic.description,
+                }
+            }));
+            
         } catch (error) {
             sendError(res, 400, 'Bad request')
         }
