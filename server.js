@@ -19,10 +19,12 @@ app.get('/', (req, res) => {
 const categoryRouter = require("./routes/categoryRouter");
 const topicRouter = require("./routes/topicRouter");
 const questionRouter = require("./routes/questionRouter");
+const imageRouter = require("./routes/imageRouter");
 
 app.use("/api/categories", categoryRouter);
 app.use("/api/topics", topicRouter);
 app.use("/api/questions", questionRouter);
+app.use("/api/images", imageRouter);
 
 const PORT = process.env.PORT || 8080;
 

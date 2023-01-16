@@ -7,12 +7,12 @@ module.exports = {
         console.log("addCategory");
         try {
             const category = new Category(req.body);
-            console.log(category);
             await category.save();
             sendResult(res, 'Success',
                 {
                     "id": category._id,
                     "title": category.title,
+                    "imageId": category.imageId,
                     "description": category.description,
                 });
         } catch (error) {
@@ -60,6 +60,7 @@ module.exports = {
             sendResult(res, 'Success', {
                 "id": newCategory._id,
                 "title": newCategory.title,
+                "imageId": newCategory.imageId,
                 "description": newCategory.description
             });
         } catch (error) {
@@ -75,6 +76,7 @@ module.exports = {
                 return {
                     "id": category._id,
                     "title": category.title,
+                    "imageId": category.imageId,
                     "description": category.description,
                 }
                 }));
@@ -90,6 +92,7 @@ module.exports = {
                 sendResult(res, 'Success', {
                     "id": category._id,
                     "title": category.title,
+                    "imageId": category.imageId,
                     "description": category.description,
                 });
             } else {
@@ -109,6 +112,7 @@ module.exports = {
                 sendResult(res, 'Success', {
                     "id": category._id,
                     "title": category.title,
+                    "imageId": category.imageId,
                     "description": category.description,
                 });
             } else {
